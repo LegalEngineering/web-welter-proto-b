@@ -239,32 +239,204 @@
             color: #fff;
         }
 
+        /* ===== SLUŽBY — pergamenová kartová hierarchia ===== */
+        #services {
+            position: relative;
+        }
+
+        /* Precision: jemný technický grid + rohové súradnice okolo sekcie */
+        .services-frame {
+            position: relative;
+            margin-top: 54px;
+            padding: 2px;
+        }
+        .services-frame::before {
+            content: "";
+            position: absolute;
+            inset: -22px -10px;
+            background-image:
+                linear-gradient(rgba(200,168,106,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200,168,106,0.045) 1px, transparent 1px);
+            background-size: 46px 46px;
+            -webkit-mask-image: radial-gradient(ellipse 78% 70% at 50% 46%, #000 0%, transparent 82%);
+            mask-image: radial-gradient(ellipse 78% 70% at 50% 46%, #000 0%, transparent 82%);
+            pointer-events: none;
+        }
+        .services-coord {
+            position: absolute;
+            font-family: 'Inter', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            color: rgba(200,168,106,0.34);
+            text-transform: uppercase;
+            pointer-events: none;
+            user-select: none;
+        }
+        .services-coord.tl { top: -34px; left: 0; }
+        .services-coord.tr { top: -34px; right: 0; }
+        .services-coord.br { bottom: -34px; right: 0; }
+        .services-coord::before {
+            content: "";
+            position: absolute;
+            width: 7px; height: 7px;
+            border: 1px solid rgba(200,168,106,0.34);
+        }
+        .services-coord.tl::before { left: -16px; top: 2px; border-right: 0; border-bottom: 0; }
+        .services-coord.tr::before { right: -16px; top: 2px; border-left: 0; border-bottom: 0; }
+        .services-coord.br::before { right: -16px; bottom: 2px; border-left: 0; border-top: 0; }
+
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 18px;
         }
 
         .service-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            background:
+                linear-gradient(158deg, rgba(30,27,19,0.62) 0%, rgba(17,15,11,0.5) 100%);
+            backdrop-filter: blur(8px) saturate(118%);
+            -webkit-backdrop-filter: blur(8px) saturate(118%);
+            padding: 30px 30px 34px;
+            border-radius: 3px;
+            border: 1px solid rgba(200,168,106,0.16);
+            box-shadow:
+                0 18px 44px rgba(0,0,0,0.42),
+                inset 0 1px 0 rgba(232,226,210,0.05);
+            overflow: hidden;
+            transition:
+                transform 0.5s cubic-bezier(.22,1,.36,1),
+                box-shadow 0.5s cubic-bezier(.22,1,.36,1),
+                border-color 0.5s ease;
+            isolation: isolate;
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.08);
+        /* Precision: index + jemná baseline linka v hlavičke karty */
+        .service-card .sc-index {
+            font-family: 'Inter', monospace;
+            font-size: 0.66rem;
+            letter-spacing: 0.32em;
+            color: rgba(200,168,106,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .service-card .sc-index::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(200,168,106,0.28), transparent);
+        }
+
+        /* Zlatý "scan" prúžok pri hoveri — pečatné svetlo */
+        .service-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle 60% 80% at 50% -20%, rgba(200,168,106,0.16) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .service-card:hover,
+        .service-card:focus-within {
+            transform: translateY(-6px);
+            border-color: rgba(200,168,106,0.42);
+            box-shadow:
+                0 30px 64px rgba(0,0,0,0.55),
+                0 0 0 1px rgba(200,168,106,0.12),
+                inset 0 1px 0 rgba(232,226,210,0.08);
+        }
+        .service-card:hover::after,
+        .service-card:focus-within::after {
+            opacity: 1;
         }
 
         .service-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #a0c4ff;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.62em;
+            font-weight: 500;
+            margin-bottom: 14px;
+            color: #f0e9d6;
+            letter-spacing: 0.3px;
+        }
+
+        .service-card p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            font-weight: 300;
+            line-height: 1.72;
+            color: #b8b09a;
+        }
+
+        /* Featured — dominantná karta (Obchodné právo): 2x2 plocha */
+        .service-card.is-featured {
+            grid-column: span 2;
+            grid-row: span 2;
+            padding: 44px 46px 48px;
+            background:
+                radial-gradient(ellipse 80% 70% at 20% 0%, rgba(200,168,106,0.10) 0%, transparent 55%),
+                linear-gradient(155deg, rgba(34,30,21,0.68) 0%, rgba(18,16,11,0.54) 100%);
+            border-color: rgba(200,168,106,0.3);
+        }
+        .service-card.is-featured h3 {
+            font-size: 2.7em;
+            line-height: 1.06;
+            margin-bottom: 20px;
+        }
+        .service-card.is-featured p {
+            font-size: 1.12em;
+            line-height: 1.85;
+            max-width: 44ch;
+            color: #c8c0a8;
+        }
+        .service-card.is-featured .sc-index {
+            font-size: 0.72rem;
+            margin-bottom: 30px;
+        }
+        /* Featured: jemná pečať v rohu */
+        .service-card.is-featured::before {
+            content: "";
+            position: absolute;
+            right: -54px;
+            bottom: -54px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(200,168,106,0.16);
+            box-shadow:
+                inset 0 0 0 18px transparent,
+                inset 0 0 0 19px rgba(200,168,106,0.10);
+            pointer-events: none;
+        }
+
+        /* Wide — sekundárna akcentovaná karta (Stavebné právo): 2 stĺpce */
+        .service-card.is-wide {
+            grid-column: span 2;
+        }
+        .service-card.is-wide h3 {
+            font-size: 1.9em;
+        }
+
+        @media (max-width: 900px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .service-card.is-featured,
+            .service-card.is-wide { grid-column: span 2; }
+            .service-card.is-featured { grid-row: auto; }
+            .service-card.is-featured h3 { font-size: 2.2em; }
+        }
+        @media (max-width: 600px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .service-card,
+            .service-card.is-featured,
+            .service-card.is-wide { grid-column: span 1; }
+            .service-card.is-featured { padding: 32px 26px 36px; }
+            .service-card.is-featured h3 { font-size: 1.9em; }
+            .services-coord { display: none; }
         }
 
         .contact-grid {
@@ -512,30 +684,41 @@
 
         <section id="services">
             <h2 class="section-title">Naše služby</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <h3>Obchodné právo</h3>
-                    <p>Komplexné poradenstvo v oblasti obchodného práva, vrátane zakladania spoločností, zmluvného práva a korporátneho práva.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Stavebné právo</h3>
-                    <p>Právne poradenstvo pri stavebných projektoch, zmluvách o dielo, územnom plánovaní a stavebných konaniach.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Energetické právo</h3>
-                    <p>Špecializované právne služby v oblasti energetiky, obnoviteľných zdrojov energie a regulácie.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Daňové právo</h3>
-                    <p>Poradenstvo v oblasti daňového práva, daňová optimalizácia a zastupovanie v daňových konaniach.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Trestné právo</h3>
-                    <p>Obhajoba v trestnom konaní, zastupovanie poškodených a komplexné právne poradenstvo v trestných veciach.</p>
-                </div>
-                <div class="service-card">
-                    <h3>Rodinné právo</h3>
-                    <p>Riešenie rodinnoprávnych vzťahov, rozvody, vyživovacie povinnosti a záležitosti týkajúce sa maloletých detí.</p>
+            <div class="services-frame">
+                <span class="services-coord tl" aria-hidden="true">SVC · 06 oblastí</span>
+                <span class="services-coord tr" aria-hidden="true">lat 48.143 · lon 17.110</span>
+                <span class="services-coord br" aria-hidden="true">BW · AK — praxis</span>
+                <div class="services-grid">
+                    <div class="service-card is-featured">
+                        <div class="sc-index" aria-hidden="true">01 — PRAX</div>
+                        <h3>Obchodné právo</h3>
+                        <p>Komplexné poradenstvo v oblasti obchodného práva, vrátane zakladania spoločností, zmluvného práva a korporátneho práva.</p>
+                    </div>
+                    <div class="service-card is-wide">
+                        <div class="sc-index" aria-hidden="true">02 — PRAX</div>
+                        <h3>Stavebné právo</h3>
+                        <p>Právne poradenstvo pri stavebných projektoch, zmluvách o dielo, územnom plánovaní a stavebných konaniach.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="sc-index" aria-hidden="true">03 — PRAX</div>
+                        <h3>Energetické právo</h3>
+                        <p>Špecializované právne služby v oblasti energetiky, obnoviteľných zdrojov energie a regulácie.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="sc-index" aria-hidden="true">04 — PRAX</div>
+                        <h3>Daňové právo</h3>
+                        <p>Poradenstvo v oblasti daňového práva, daňová optimalizácia a zastupovanie v daňových konaniach.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="sc-index" aria-hidden="true">05 — PRAX</div>
+                        <h3>Trestné právo</h3>
+                        <p>Obhajoba v trestnom konaní, zastupovanie poškodených a komplexné právne poradenstvo v trestných veciach.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="sc-index" aria-hidden="true">06 — PRAX</div>
+                        <h3>Rodinné právo</h3>
+                        <p>Riešenie rodinnoprávnych vzťahov, rozvody, vyživovacie povinnosti a záležitosti týkajúce sa maloletých detí.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -960,122 +1143,257 @@
     </footer>
 
     <script>
-        /* ===== DIGITÁLNY PERGAMEN — hĺbkové vrstvy práva =====
-           Tri canvas vrstvy (back/mid/front) s rôznou hustotou, mierkou
-           a parallax citlivosťou. Obsah: fragmenty rímskeho práva, §,
-           technické diagramy a blockchain-like hash reťazce. Všetko
-           „dýcha" cez globálnu sínusovú fázu; nič nie je doslovne
-           čitateľné — je to atmosféra, nie šum. */
+        /* ===== DIGITÁLNY PERGAMEN v2 — SÉMANTICKÉ VRSTVY PRÁVNEJ PRÁCE =====
+           Tri canvas vrstvy (back/mid/front). Pozadie už nie je náhodný
+           dekoračný šum — každý útvar reprezentuje konkrétnu právnu prácu
+           tejto kancelárie:
+             • corporate — strom vlastníckej štruktúry (s.r.o. → podiely),
+             • cadastre  — katastrálna mriežka parciel + č. LV / parc. č.,
+             • chain     — reťaz dôkazov / transakcií (hash bloky + šípky),
+             • seal      — notárska / overovacia pečať ako uzol grafu,
+             • statute   — § kotva reálneho zákonníka, viazaná na štruktúru.
+           Útvary sú zoskupené do „scén" (nie izolované znaky), tlmené a
+           rozostrené — čitateľné ako význam, nie ako text. Všetko „dýcha"
+           cez spoločnú sínusovú fázu. */
         (function () {
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            const LATIN = [
-                'IUSTITIA', 'HONESTE VIVERE', 'ALTERUM NON LAEDERE', 'SUUM CUIQUE TRIBUERE',
-                'PACTA SUNT SERVANDA', 'LEX', 'IUS', 'NEMO IUDEX IN CAUSA SUA',
-                'AUDIATUR ET ALTERA PARS', 'IN DUBIO PRO REO', 'ULPIANUS · DIGESTA',
-                'CORPUS IURIS CIVILIS', 'DURA LEX SED LEX', 'BONA FIDE', 'ERGA OMNES',
-                'RES IUDICATA', 'ONUS PROBANDI', 'AD LITTERAM', 'DE LEGE FERENDA',
+            // Reálne kotvy z praxe kancelárie (obch./stav./energ./daňové/trest./rod.)
+            const STATUTE = [
+                '§ 105 OZ', '§ 56 ObZ', '§ 261 ObZ', '§ 409 ObZ', '§ 588 OZ',
+                '§ 151a OZ', '§ 39 OZ', '§ 451 OZ', 'čl. 46 Ústavy', '§ 18 ZoEN',
+                '§ 76 SZ', '§ 88 SZ', 'zák. 40/1964 Zb.', 'zák. 513/1991 Zb.',
+                '§ 2 ods. 1 DP', '§ 116 OZ',
             ];
-            const SK = [
-                '§ 1', '§ 11', '§ 42 ods. 2', '§ 153', 'čl. 46 Ústavy', 'zák. č. 40/1964 Zb.',
-                'Obchodný zákonník', 'Stavebný zákon', 'Trestný poriadok', 'Občiansky zákonník',
-                'Energetický zákon', 'Daňový poriadok', 'rozsudok · sp. zn.',
-            ];
+            const ENTITY = ['BW AK', 's.r.o.', 'a.s.', 'k.s.', 'SZČO', 'ZDRUŽ.'];
             const HEX = '0123456789abcdef';
-
             function hash(len) {
                 let s = '0x';
                 for (let i = 0; i < len; i++) s += HEX[(Math.random() * 16) | 0];
                 return s;
             }
+            function rint(a, b) { return a + ((Math.random() * (b - a + 1)) | 0); }
 
-            // Definícia troch vrstiev: hustota, mierka písma, parallax faktor
+            // Tri vrstvy: hustota scén, mierka, parallax, dych
             const LAYERS = [
-                { canvas: document.getElementById('pgBack'),  density: 0.000050, size: [11, 16], px: 0.012, py: 0.018, breathe: 0.05 },
-                { canvas: document.getElementById('pgMid'),   density: 0.000034, size: [15, 24], px: 0.024, py: 0.034, breathe: 0.07 },
-                { canvas: document.getElementById('pgFront'), density: 0.000020, size: [22, 40], px: 0.045, py: 0.060, breathe: 0.10 },
+                { canvas: document.getElementById('pgBack'),  density: 0.0000060, scale: 0.62, px: 0.012, py: 0.018, breathe: 0.05 },
+                { canvas: document.getElementById('pgMid'),   density: 0.0000040, scale: 0.92, px: 0.024, py: 0.034, breathe: 0.07 },
+                { canvas: document.getElementById('pgFront'), density: 0.0000023, scale: 1.42, px: 0.045, py: 0.060, breathe: 0.10 },
             ];
 
             let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-            function makeFragment(layerIdx) {
+            // Jedna „scéna" = sémantický zhluk útvarov so spoločným kontextom
+            function makeScene(L) {
                 const r = Math.random();
-                let kind, text;
-                if (r < 0.34)       { kind = 'latin'; text = LATIN[(Math.random() * LATIN.length) | 0]; }
-                else if (r < 0.60)  { kind = 'sk';    text = SK[(Math.random() * SK.length) | 0]; }
-                else if (r < 0.78)  { kind = 'hash';  text = hash(8 + ((Math.random() * 24) | 0)); }
-                else if (r < 0.90)  { kind = 'geo'; }
-                else                { kind = 'seal'; }
-                return {
-                    kind, text,
-                    x: Math.random(),            // 0..1 relatívne k W
-                    y: Math.random() * 1.6 - 0.3, // mierne presahuje viewport (parallax priestor)
-                    rot: (Math.random() - 0.5) * 0.5,
-                    fs: LAYERS[layerIdx].size[0] + Math.random() * (LAYERS[layerIdx].size[1] - LAYERS[layerIdx].size[0]),
-                    a: 0.25 + Math.random() * 0.6,
-                    ph: Math.random() * Math.PI * 2, // individuálna fáza dýchania
-                    rad: 26 + Math.random() * 90,
+                let kind;
+                if (r < 0.30)       kind = 'corporate';
+                else if (r < 0.55)  kind = 'cadastre';
+                else if (r < 0.78)  kind = 'chain';
+                else if (r < 0.90)  kind = 'seal';
+                else                kind = 'statute';
+
+                const sc = {
+                    kind,
+                    x: Math.random(),
+                    y: Math.random() * 1.6 - 0.3,
+                    s: L.scale * (0.8 + Math.random() * 0.5),
+                    a: 0.28 + Math.random() * 0.5,
+                    ph: Math.random() * Math.PI * 2,
+                    rot: (Math.random() - 0.5) * 0.16,
                 };
+
+                if (kind === 'corporate') {
+                    // Vlastnícky strom: koreň (entita) → 2-3 vetvy → listy s podielmi
+                    const branches = rint(2, 3);
+                    sc.root = ENTITY[(Math.random() * 2) | 0]; // BW AK / s.r.o.
+                    sc.nodes = [];
+                    for (let i = 0; i < branches; i++) {
+                        const childCnt = rint(1, 2);
+                        const node = { label: ENTITY[rint(1, ENTITY.length - 1)], pct: rint(5, 100), children: [] };
+                        for (let j = 0; j < childCnt; j++) {
+                            node.children.push({ pct: rint(1, 49) });
+                        }
+                        sc.nodes.push(node);
+                    }
+                } else if (kind === 'cadastre') {
+                    // Katastrálna mriežka: nepravidelné parcely + č. LV / parc. č.
+                    sc.cols = rint(3, 5);
+                    sc.rows = rint(2, 4);
+                    sc.cell = 26 + Math.random() * 16;
+                    sc.lv = rint(180, 4900);
+                    sc.parc = rint(10, 980) + '/' + rint(1, 40);
+                    sc.fills = [];
+                    for (let i = 0; i < sc.cols * sc.rows; i++) sc.fills.push(Math.random() < 0.22);
+                } else if (kind === 'chain') {
+                    // Reťaz dôkazov/transakcií: bloky spojené šípkami
+                    sc.blocks = rint(3, 5);
+                    sc.bw = 30 + Math.random() * 16;
+                    sc.tag = hash(6);
+                } else if (kind === 'seal') {
+                    sc.rad = 26 + Math.random() * 70;
+                } else { // statute
+                    sc.text = STATUTE[(Math.random() * STATUTE.length) | 0];
+                    sc.fs = 16 + Math.random() * 22;
+                }
+                return sc;
             }
 
-            function buildLayer(L, idx) {
-                const count = Math.max(8, Math.round(W * H * L.density));
-                L.frags = [];
-                for (let i = 0; i < count; i++) L.frags.push(makeFragment(idx));
+            function buildLayer(L) {
+                const count = Math.max(5, Math.round(W * H * L.density));
+                L.scenes = [];
+                for (let i = 0; i < count; i++) L.scenes.push(makeScene(L));
                 L.ctx = L.canvas.getContext('2d');
             }
 
             function resize() {
                 W = window.innerWidth;
                 H = window.innerHeight;
-                LAYERS.forEach((L, idx) => {
+                LAYERS.forEach((L) => {
                     L.canvas.width = W * dpr;
                     L.canvas.height = H * dpr;
-                    buildLayer(L, idx);
+                    buildLayer(L);
                 });
             }
 
-            function drawSeal(ctx, x, y, rad, a) {
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.strokeStyle = `rgba(200,168,106,${a * 0.5})`;
+            const GOLD   = (a) => `rgba(200,168,106,${a})`;
+            const VELLUM = (a) => `rgba(225,216,190,${a})`;
+            const STEEL  = (a) => `rgba(168,178,172,${a})`;
+
+            // — Notárska pečať ako uzol grafu (kruh + zúbky + jadro)
+            function drawSeal(ctx, rad, a) {
+                ctx.strokeStyle = GOLD(a * 0.55);
                 ctx.lineWidth = 1;
                 ctx.beginPath(); ctx.arc(0, 0, rad, 0, Math.PI * 2); ctx.stroke();
-                ctx.beginPath(); ctx.arc(0, 0, rad * 0.74, 0, Math.PI * 2); ctx.stroke();
+                ctx.beginPath(); ctx.arc(0, 0, rad * 0.72, 0, Math.PI * 2); ctx.stroke();
                 const teeth = 24;
                 for (let i = 0; i < teeth; i++) {
                     const ang = (i / teeth) * Math.PI * 2;
                     ctx.beginPath();
-                    ctx.moveTo(Math.cos(ang) * rad * 0.74, Math.sin(ang) * rad * 0.74);
+                    ctx.moveTo(Math.cos(ang) * rad * 0.72, Math.sin(ang) * rad * 0.72);
                     ctx.lineTo(Math.cos(ang) * rad, Math.sin(ang) * rad);
                     ctx.stroke();
                 }
-                ctx.restore();
+                ctx.beginPath(); ctx.arc(0, 0, rad * 0.16, 0, Math.PI * 2);
+                ctx.strokeStyle = GOLD(a * 0.7); ctx.stroke();
             }
 
-            function drawGeo(ctx, x, y, rad, a) {
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.strokeStyle = `rgba(180,170,140,${a * 0.45})`;
+            // — Vlastnícky strom (corporate ownership): koreň → vetvy → podiely
+            function drawCorporate(ctx, sc, a, scl) {
+                const f = 11 * scl;
+                ctx.font = `${f}px "Inter", sans-serif`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.strokeStyle = GOLD(a * 0.5);
                 ctx.lineWidth = 1;
-                // Technický diagram: uzly + spoje (knowledge architecture)
-                const n = 4 + ((rad / 24) | 0);
-                const pts = [];
+
+                // koreňový uzol
+                ctx.beginPath(); ctx.arc(0, 0, 3 * scl, 0, Math.PI * 2);
+                ctx.fillStyle = GOLD(a * 0.85); ctx.fill();
+                ctx.fillStyle = VELLUM(a * 0.9);
+                ctx.fillText(sc.root, 0, -12 * scl);
+
+                const n = sc.nodes.length;
+                const spread = 64 * scl;
+                const dy1 = 52 * scl;
                 for (let i = 0; i < n; i++) {
-                    const ang = (i / n) * Math.PI * 2 + rad;
-                    pts.push([Math.cos(ang) * rad, Math.sin(ang) * rad * 0.6]);
-                }
-                for (let i = 0; i < n; i++) {
-                    const p = pts[i], q = pts[(i + 1) % n];
-                    ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
-                    if (i % 2 === 0) {
-                        const m = pts[(i + 2) % n];
-                        ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(m[0], m[1]); ctx.stroke();
+                    const cx = (i - (n - 1) / 2) * spread;
+                    const cy = dy1;
+                    // hrana koreň → vetva
+                    ctx.beginPath();
+                    ctx.moveTo(0, 4 * scl);
+                    ctx.bezierCurveTo(0, cy * 0.5, cx, cy * 0.4, cx, cy - 4 * scl);
+                    ctx.stroke();
+                    // uzol vetvy
+                    ctx.beginPath(); ctx.arc(cx, cy, 2.4 * scl, 0, Math.PI * 2);
+                    ctx.fillStyle = GOLD(a * 0.7); ctx.fill();
+                    ctx.fillStyle = VELLUM(a * 0.78);
+                    ctx.fillText(sc.nodes[i].label, cx, cy - 11 * scl);
+                    ctx.fillStyle = GOLD(a * 0.65);
+                    ctx.fillText(sc.nodes[i].pct + ' %', cx, cy + 11 * scl);
+                    // listy = menšinové podiely
+                    const ch = sc.nodes[i].children;
+                    for (let j = 0; j < ch.length; j++) {
+                        const lx = cx + (j - (ch.length - 1) / 2) * 30 * scl;
+                        const ly = cy + 44 * scl;
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy + 4 * scl);
+                        ctx.lineTo(lx, ly - 3 * scl);
+                        ctx.strokeStyle = GOLD(a * 0.32); ctx.stroke();
+                        ctx.strokeStyle = GOLD(a * 0.5);
+                        ctx.beginPath(); ctx.arc(lx, ly, 1.7 * scl, 0, Math.PI * 2);
+                        ctx.fillStyle = GOLD(a * 0.55); ctx.fill();
+                        ctx.fillStyle = GOLD(a * 0.5);
+                        ctx.fillText(ch[j].pct + '%', lx, ly + 10 * scl);
                     }
-                    ctx.beginPath(); ctx.arc(p[0], p[1], 1.6, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(200,168,106,${a * 0.6})`; ctx.fill();
                 }
-                ctx.restore();
+            }
+
+            // — Katastrálna mriežka parciel + č. LV / parcelné číslo
+            function drawCadastre(ctx, sc, a, scl) {
+                const cell = sc.cell * scl;
+                const w = sc.cols * cell, h = sc.rows * cell;
+                ctx.translate(-w / 2, -h / 2);
+                ctx.lineWidth = 1;
+                for (let r = 0; r < sc.rows; r++) {
+                    for (let c = 0; c < sc.cols; c++) {
+                        const idx = r * sc.cols + c;
+                        // jitter rohov = nepravidelné parcely (nie raster)
+                        const jx = ((Math.sin(idx * 12.9) * 0.5) | 0) * 4;
+                        const x = c * cell, y = r * cell;
+                        if (sc.fills[idx]) {
+                            ctx.fillStyle = GOLD(a * 0.10);
+                            ctx.fillRect(x, y, cell, cell);
+                        }
+                        ctx.strokeStyle = STEEL(a * 0.4);
+                        ctx.strokeRect(x + jx * 0.0, y, cell, cell);
+                    }
+                }
+                // diagonálna parcelná hranica (medza)
+                ctx.strokeStyle = GOLD(a * 0.45);
+                ctx.beginPath();
+                ctx.moveTo(0, h * 0.32);
+                ctx.lineTo(w * 0.62, h * 0.05);
+                ctx.lineTo(w, h * 0.5);
+                ctx.stroke();
+                ctx.font = `${10 * scl}px "Inter", sans-serif`;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                ctx.fillStyle = GOLD(a * 0.6);
+                ctx.fillText('LV ' + sc.lv, 2, h + 5 * scl);
+                ctx.fillStyle = STEEL(a * 0.55);
+                ctx.fillText('parc. ' + sc.parc, 2, h + 18 * scl);
+            }
+
+            // — Reťaz dôkazov / transakcií: bloky + šípky + hash kotva
+            function drawChain(ctx, sc, a, scl) {
+                const bw = sc.bw * scl, bh = bw * 0.62, gap = bw * 0.5;
+                const total = sc.blocks * bw + (sc.blocks - 1) * gap;
+                ctx.translate(-total / 2, -bh / 2);
+                ctx.lineWidth = 1;
+                for (let i = 0; i < sc.blocks; i++) {
+                    const x = i * (bw + gap);
+                    ctx.strokeStyle = GOLD(a * (i === sc.blocks - 1 ? 0.62 : 0.42));
+                    ctx.strokeRect(x, 0, bw, bh);
+                    // vnútorná „pečatná" linka
+                    ctx.beginPath();
+                    ctx.moveTo(x + 4, bh * 0.62);
+                    ctx.lineTo(x + bw - 4, bh * 0.62);
+                    ctx.strokeStyle = STEEL(a * 0.35);
+                    ctx.stroke();
+                    if (i < sc.blocks - 1) {
+                        // šípka → nasledujúci blok (kontinuita dôkazu)
+                        const ax = x + bw, ay = bh / 2;
+                        ctx.strokeStyle = GOLD(a * 0.5);
+                        ctx.beginPath();
+                        ctx.moveTo(ax, ay); ctx.lineTo(ax + gap, ay);
+                        ctx.moveTo(ax + gap - 4, ay - 3); ctx.lineTo(ax + gap, ay);
+                        ctx.lineTo(ax + gap - 4, ay + 3);
+                        ctx.stroke();
+                    }
+                }
+                ctx.font = `${9 * scl}px "Inter", monospace`;
+                ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+                ctx.fillStyle = STEEL(a * 0.55);
+                ctx.fillText(sc.tag, 0, bh + 6 * scl);
             }
 
             let scrollY = window.pageYOffset || 0;
@@ -1089,46 +1407,39 @@
                     const ctx = L.ctx;
                     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                     ctx.clearRect(0, 0, W, H);
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
 
-                    const offY = -scrollY * L.py;        // parallax podľa scrollu
-                    const driftX = Math.sin(t * 0.05) * W * L.px * 6; // veľmi pomalý drift
-                    const scale = 1 + breath * L.breathe * 0.05;
+                    const offY = -scrollY * L.py;
+                    const driftX = Math.sin(t * 0.05) * W * L.px * 6;
+                    const gScale = 1 + breath * L.breathe * 0.05;
 
-                    for (let i = 0; i < L.frags.length; i++) {
-                        const f = L.frags[i];
-                        let px = f.x * W + driftX;
-                        let py = ((f.y * H + offY) % (H * 1.6) + H * 1.6) % (H * 1.6) - H * 0.3;
-                        const indiv = Math.sin(t * 0.5 + f.ph);
-                        const alpha = f.a * (0.62 + 0.38 * (0.5 + 0.5 * indiv));
+                    for (let i = 0; i < L.scenes.length; i++) {
+                        const sc = L.scenes[i];
+                        const px = sc.x * W + driftX;
+                        const py = ((sc.y * H + offY) % (H * 1.6) + H * 1.6) % (H * 1.6) - H * 0.3;
+                        const indiv = Math.sin(t * 0.5 + sc.ph);
+                        const alpha = sc.a * (0.6 + 0.4 * (0.5 + 0.5 * indiv));
+                        const scl = sc.s;
 
                         ctx.save();
                         ctx.translate(px, py);
-                        ctx.rotate(f.rot + indiv * 0.012);
-                        ctx.scale(scale, scale);
+                        ctx.rotate(sc.rot + indiv * 0.008);
+                        ctx.scale(gScale, gScale);
 
-                        if (f.kind === 'seal') {
-                            drawSeal(ctx, 0, 0, f.rad, alpha);
-                        } else if (f.kind === 'geo') {
-                            drawGeo(ctx, 0, 0, f.rad, alpha);
-                        } else {
-                            ctx.font = (f.kind === 'latin'
-                                ? `${f.fs}px "Cormorant Garamond", Georgia, serif`
-                                : f.kind === 'hash'
-                                    ? `${f.fs * 0.78}px "Inter", monospace`
-                                    : `${f.fs}px "Cormorant Garamond", Georgia, serif`);
-                            const col = f.kind === 'hash'
-                                ? `rgba(150,170,165,${alpha * 0.7})`
-                                : f.kind === 'sk'
-                                    ? `rgba(200,168,106,${alpha * 0.8})`
-                                    : `rgba(225,216,190,${alpha})`;
-                            ctx.fillStyle = col;
-                            if (f.kind === 'latin') {
-                                ctx.shadowColor = 'rgba(200,168,106,0.25)';
-                                ctx.shadowBlur = 6;
-                            }
-                            ctx.fillText(f.text, 0, 0);
+                        if (sc.kind === 'seal') {
+                            drawSeal(ctx, sc.rad * scl, alpha);
+                        } else if (sc.kind === 'corporate') {
+                            drawCorporate(ctx, sc, alpha, scl);
+                        } else if (sc.kind === 'cadastre') {
+                            drawCadastre(ctx, sc, alpha, scl);
+                        } else if (sc.kind === 'chain') {
+                            drawChain(ctx, sc, alpha, scl);
+                        } else { // statute — § kotva
+                            ctx.font = `${sc.fs * scl}px "Cormorant Garamond", Georgia, serif`;
+                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                            ctx.shadowColor = 'rgba(200,168,106,0.22)';
+                            ctx.shadowBlur = 6;
+                            ctx.fillStyle = GOLD(alpha * 0.85);
+                            ctx.fillText(sc.text, 0, 0);
                         }
                         ctx.restore();
                     }
